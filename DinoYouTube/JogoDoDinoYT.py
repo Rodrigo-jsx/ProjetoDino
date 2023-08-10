@@ -18,11 +18,15 @@ pygame.display.set_caption('Jogo do Dino')
 
 # Cria uma variável que carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
 sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
-
+seta = pygame.image.load(os.path.join(diretorio_imagens, 'seta.png'))
 
 class Dino(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.som_pulo = pygame.mixer.Sound(os.path.join(diretorio_sons, 'jump_sound.wav'))
+        self.som_pulo.set_volume(1)
+        self.som_do_tiro = pygame.mixer.Sound(os.path.join(diretorio_sons, 'tirododino.wav'))
+        self.som_do_tiro.set_volume(1)
         # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
         for i in range(3):
@@ -42,6 +46,10 @@ class Dino(pygame.sprite.Sprite):
         self.pos_y_inicial = ALTURA-64 - 96//2
     def pular(self):
         self.pulo = True
+        self.som_pulo.play()
+
+    def atirar(self):
+        self.som_do_tiro.play()
 
     def update(self):
         if self.pulo == True:
@@ -57,6 +65,7 @@ class Dino(pygame.sprite.Sprite):
             self.index_lista = 0
         self.index_lista = self.index_lista + 0.25
         self.image = self.imagens_dinossauro[int(self.index_lista)]
+
 
 
 class Nuvens(pygame.sprite.Sprite):
@@ -99,6 +108,9 @@ todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
 todas_as_sprites.add(dino)
 
+
+
+
 for c in range(LARGURA*2//64):
     chao = Chao(c)
     todas_as_sprites.add(chao)
@@ -120,7 +132,12 @@ while deve_continuar:
             deve_continuar = False
         if event.type == KEYDOWN:
             if event.key == K_SPACE:
-                dino.pular()
+                if dino.rect.y != dino.pos_y_inicial:
+                    pass
+                else:
+                    dino.pular()
+            if event.key == K_f:
+                dino.atirar()
     todas_as_sprites.draw(tela)
     todas_as_sprites.update()
     pygame.display.flip()
