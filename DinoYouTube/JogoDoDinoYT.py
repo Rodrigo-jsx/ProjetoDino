@@ -67,7 +67,6 @@ class Dino(pygame.sprite.Sprite):
         self.image = self.imagens_dinossauro[int(self.index_lista)]
 
 
-
 class Nuvens(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -98,16 +97,32 @@ class Chao(pygame.sprite.Sprite):
         self.rect.y = ALTURA - 64
         self.rect.x = pos_x * 64
 
+
     def update(self):
         if self.rect.topright[0] < 0:
             self.rect.x = LARGURA
         self.rect.x = self.rect.x - 10
 
 
+class Cacto(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = sprite_sheet.subsurface((32 * 5, 0), (32, 32))
+        self.image = pygame.transform.scale(self.image,(32*2, 32*2))
+        self.rect = self.image.get_rect()
+        self.rect.center = (LARGURA, ALTURA - 64)
+    def update(self):
+        if self.rect.topright[0] < 0:
+            self.rect.x = LARGURA
+        else:
+            self.rect.x = self.rect.y - 10
+
+
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
 todas_as_sprites.add(dino)
-
+cacto = Cacto()
+todas_as_sprites.add(cacto)
 
 
 
