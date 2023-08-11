@@ -18,12 +18,13 @@ pygame.display.set_caption('Jogo do Dino')
 
 # Cria uma variável que carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
 sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
-seta = pygame.image.load(os.path.join(diretorio_imagens, 'seta.png'))
 background_art = pygame.image.load(os.path.join(diretorio_imagens, 'pre_historia.png')).convert()
+sprite_ovo_dino = pygame.image.load(os.path.join(diretorio_imagens, 'ovo_dino.png'))
 imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
 
 colidiu = False
 escolha_obstaculo = choice([0, 1])
+sorteio_ovo = choice([0, 5])
 velocidade_jogo = 10
 
 pontos = 0
@@ -196,11 +197,28 @@ class DinoVoador(pygame.sprite.Sprite):
             self.index_lista += 0.25
             self.image = self.imagens_dino_voador[int(self.index_lista)]
 
+class OvoDino(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = sprite_ovo_dino.subsurface((0, 0), (1024, 1024))
+        self.image = pygame.transform.scale(self.image, (1024//18, 1024//18))
+        self.rect = self.image.get_rect()
+        self.rect.center = (300, 150)
+        self.sorteio_ovo = sorteio_ovo
+
+    def update(self):
+        if self.sorteio_ovo == 2:
+            if self.rect.topright[0] < 0:
+                self.rect.x = LARGURA
+            else:
+                self.rect.x = self.rect.x - velocidade_jogo
+
+
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
-
+ovo_dino = OvoDino()
 todas_as_sprites.add(dino)
-
+todas_as_sprites.add(ovo_dino)
 cacto = Cacto()
 todas_as_sprites.add(cacto)
 
