@@ -19,6 +19,8 @@ pygame.display.set_caption('Jogo do Dino')
 # Cria uma variável que carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
 sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
 seta = pygame.image.load(os.path.join(diretorio_imagens, 'seta.png'))
+background_art = pygame.image.load(os.path.join(diretorio_imagens, 'pre_historia.png')).convert()
+imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
 
 colidiu = False
 escolha_obstaculo = choice([0, 1])
@@ -52,6 +54,7 @@ class Dino(pygame.sprite.Sprite):
         self.som_da_colisao.set_volume(1)
         self.som_pontuacao = pygame.mixer.Sound(os.path.join(diretorio_sons, 'score_sound.wav'))
         self.som_pontuacao.set_volume(1)
+
        # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
 
@@ -97,6 +100,7 @@ class Dino(pygame.sprite.Sprite):
             self.index_lista = 0
         self.index_lista = self.index_lista + 0.25
         self.image = self.imagens_dinossauro[int(self.index_lista)]
+
 
 
 class Nuvens(pygame.sprite.Sprite):
@@ -195,6 +199,7 @@ todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
 
 todas_as_sprites.add(dino)
+
 cacto = Cacto()
 todas_as_sprites.add(cacto)
 
@@ -220,6 +225,7 @@ deve_continuar = True
 while deve_continuar:
     relogio.tick(30)
     tela.fill(BRANCO)
+    tela.blit(imagem_fundo, (0, 0))
 
     for event in pygame.event.get():
         if event.type == QUIT:
