@@ -21,6 +21,7 @@ sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpriteshee
 seta = pygame.image.load(os.path.join(diretorio_imagens, 'seta.png'))
 escudo = pygame.image.load(os.path.join(diretorio_imagens, 'escudo.png'))
 colidiu = False
+escolha_obstaculo = choice([0,1])
 
 class Dino(pygame.sprite.Sprite):
     def __init__(self):
@@ -122,11 +123,15 @@ class Cacto(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (LARGURA, ALTURA - 64)
         self.mask = pygame.mask.from_surface(self.image) # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
+        self.escolha = escolha_obstaculo
+        self.rect.x = LARGURA
+
     def update(self):
-        if self.rect.topright[0] < 0:
-            self.rect.x = LARGURA
-        else:
-            self.rect.x = self.rect.x - 10
+        if self.escolha == 0:
+            if self.rect.topright[0] < 0:
+                self.rect.x = LARGURA
+            else:
+                self.rect.x = self.rect.x - 10
 
 class DinoVoador(pygame.sprite.Sprite):
     def __init__(self):
@@ -150,15 +155,20 @@ class DinoVoador(pygame.sprite.Sprite):
         self.rect = self.image.get_rect() # Aqui eu estou deixando a imagem retâgunlar para poder manipulá-la
         self.rect.center = (LARGURA, 300)
 
+        self.escolha = escolha_obstaculo
+
+        self.rect.x = LARGURA
+
     def update(self):
-        if self.rect.topright[0] < 0:
-            self.rect.x = LARGURA
-        else:
-            self.rect.x = self.rect.x - 10
-        if self.index_lista > 1:
-            self.index_lista = 0
-        self.index_lista += 0.25
-        self.image = self.imagens_dino_voador[int(self.index_lista)]
+        if self.escolha == 1:
+            if self.rect.topright[0] < 0:
+                self.rect.x = LARGURA
+            else:
+                self.rect.x = self.rect.x - 10
+            if self.index_lista > 1:
+                self.index_lista = 0
+            self.index_lista += 0.25
+            self.image = self.imagens_dino_voador[int(self.index_lista)]
 
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
@@ -178,7 +188,7 @@ for c in range(LARGURA*2//64):
     chao = Chao(c)
     todas_as_sprites.add(chao)
 
-for i in range(3): # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
+for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
     nuvens = Nuvens()
     todas_as_sprites.add(nuvens)
 
@@ -209,6 +219,13 @@ while deve_continuar:
     # colisoes é uma lista vazia quando não tem nenhuma colisão, sem nenhum elemento.
     # Quando houver uma colisão, essa lista colisoes vai receber o objeto que colidiu com o dinossauro
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
+
+    if cacto.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:
+        escolha_obstaculo = choice([0,1])
+        cacto.rect.x = LARGURA
+        dino_voador.rect.x = LARGURA
+        cacto.escolha = escolha_obstaculo
+        dino_voador = escolha_obstaculo
 
     if colisoes and colidiu == False:
         dino.colidir()
