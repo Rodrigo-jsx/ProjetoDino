@@ -54,7 +54,8 @@ class Dino(pygame.sprite.Sprite):
         self.som_da_colisao.set_volume(1)
         self.som_pontuacao = pygame.mixer.Sound(os.path.join(diretorio_sons, 'score_sound.wav'))
         self.som_pontuacao.set_volume(1)
-
+        self.musica_fundo = pygame.mixer.Sound(os.path.join(diretorio_sons, 'musica_dino.wav'))
+        self.musica_fundo.set_volume(1)
        # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
 
@@ -168,7 +169,7 @@ class DinoVoador(pygame.sprite.Sprite):
         self.imagem2 = sprite_sheet.subsurface((32*4, 0),(32, 32))
 
         self.imagem1 = pygame.transform.scale(self.imagem1,(32*3, 32*3))
-        self.imagem2= pygame.transform.scale(self.imagem2,(32*3, 32*3))
+        self.imagem2 = pygame.transform.scale(self.imagem2,(32*3, 32*3))
 
         self.imagens_dino_voador.append(self.imagem1)
         self.imagens_dino_voador.append(self.imagem2)
@@ -221,9 +222,10 @@ for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas u
 relogio = pygame.time.Clock()
 
 deve_continuar = True
-
+dino.musica_fundo.play()
 while deve_continuar:
     relogio.tick(30)
+
     tela.fill(BRANCO)
     tela.blit(imagem_fundo, (0, 0))
 
