@@ -21,7 +21,7 @@ sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpriteshee
 seta = pygame.image.load(os.path.join(diretorio_imagens, 'seta.png'))
 escudo = pygame.image.load(os.path.join(diretorio_imagens, 'escudo.png'))
 colidiu = False
-escolha_obstaculo = choice([0,1])
+escolha_obstaculo = choice([0, 1])
 
 class Dino(pygame.sprite.Sprite):
     def __init__(self):
@@ -221,11 +221,11 @@ while deve_continuar:
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
 
     if cacto.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:
-        escolha_obstaculo = choice([0,1])
+        escolha_obstaculo = choice([0, 1])
         cacto.rect.x = LARGURA
         dino_voador.rect.x = LARGURA
         cacto.escolha = escolha_obstaculo
-        dino_voador = escolha_obstaculo
+        dino_voador.escolha = escolha_obstaculo
 
     if colisoes and colidiu == False:
         dino.colidir()
