@@ -81,6 +81,7 @@ class Dino(pygame.sprite.Sprite):
 
         self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
+        self.image = pygame.transform.scale(self.image,(48*2,41*2))
         # O atributo self.rect foi criado para armazenar o valor da imagem da sprite/frame, a partir daí ele vai pegar o retângulo dela
         self.rect = self.image.get_rect()
         # Posicione o centro desse retângulo na posição 100x e 100y
@@ -114,8 +115,7 @@ class Dino(pygame.sprite.Sprite):
             self.index_lista = 0
         self.index_lista = self.index_lista + 0.25
         self.image = self.imagens_dinossauro[int(self.index_lista)]
-
-
+        self.image = pygame.transform.scale(self.image, (48 * 2, 41 * 2))
 
 class Nuvens(pygame.sprite.Sprite):
     def __init__(self):
@@ -156,8 +156,10 @@ class Chao(pygame.sprite.Sprite):
 class Cacto(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = sprite_sheet.subsurface((32 * 5, 0), (32, 32))
-        self.image = pygame.transform.scale(self.image, (32*2, 32*2))
+        self.imagem_arvore = []
+        self.imagem_arvore = pygame.image.load('imagens/arvore_pre_historia.png')
+        # self.image = pygame.transform.scale()
+        self.image = pygame.transform.scale(self.imagem_arvore, (32*2, 32*2))
         self.rect = self.image.get_rect()
         self.rect.center = (LARGURA, ALTURA - 64)
         self.mask = pygame.mask.from_surface(self.image) # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
