@@ -31,7 +31,7 @@ pontos = 0
 def exibe_mensagem(msg, tamanho, cor):
     fonte = pygame.font.SysFont('comicsansms', tamanho, True, False) # objeto armazenando a fonte , penúltimo argumento, negrito, último argumento, itálico
     mensagem = f'{msg}' # Essa variável vai mudar a cada iteração do loop principal do jogo
-    texto_formatado = fonte.render(mensagem,True, cor) # mensagem, anti-alising(serrilhado, se você quer que o texto seja serrilhado, coloque True)
+    texto_formatado = fonte.render(mensagem, True, cor) # mensagem, anti-alising(serrilhado, se você quer que o texto seja serrilhado, coloque True)
     return texto_formatado
 
 def reiniciar_jogo():
@@ -289,7 +289,7 @@ while deve_continuar:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
-        texto_pontos = exibe_mensagem(pontos, 40,(0,0,0))
+        texto_pontos = exibe_mensagem(pontos, 40, (0, 0, 0))
     if pontos % 100 == 0 and colidiu == False:
         dino.som_pontuacao.play()
         if velocidade_jogo >= 23:
