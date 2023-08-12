@@ -24,7 +24,8 @@ imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
 
 colidiu = False
 escolha_obstaculo = choice([0, 1])
-sorteio_ovo = choice([0, 5])
+
+
 velocidade_jogo = 10
 
 pontos = 0
@@ -59,13 +60,24 @@ class Dino(pygame.sprite.Sprite):
         self.musica_fundo.set_volume(1)
        # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
+        #
+        # for i in range(3):
+        #
+        #     # 1.ª Tupla, posição em x e y da imagem. 2.ª tupla: tamanho da imagem.
+        #     img = sprite_sheet.subsurface((i*32, 0), (32, 32))
+        #     img = pygame.transform.scale(img, (32*3, 32*3))
+        #     self.imagens_dinossauro.append(img)
 
-        for i in range(3):
-
-            # 1.ª Tupla, posição em x e y da imagem. 2.ª tupla: tamanho da imagem.
-            img = sprite_sheet.subsurface((i*32, 0), (32, 32))
-            img = pygame.transform.scale(img, (32*3, 32*3))
-            self.imagens_dinossauro.append(img)
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo0.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo1.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo2.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo3.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo4.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo5.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo6.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo7.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo8.png'))
+        self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo9.png'))
 
         self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
@@ -135,7 +147,6 @@ class Chao(pygame.sprite.Sprite):
         self.rect.y = ALTURA - 64
         self.rect.x = pos_x * 64
 
-
     def update(self):
         if self.rect.topright[0] < 0:
             self.rect.x = LARGURA
@@ -165,18 +176,24 @@ class DinoVoador(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.imagens_dino_voador = []
+        #
+        # self.imagem1 = sprite_sheet.subsurface((32*3, 0),(32, 32))
+        # self.imagem2 = sprite_sheet.subsurface((32*4, 0),(32, 32))
+        #
+        # self.imagem1 = pygame.transform.scale(self.imagem1,(32*3, 32*3))
+        # self.imagem2 = pygame.transform.scale(self.imagem2,(32*3, 32*3))
+        #
+        # self.imagens_dino_voador.append(self.imagem1)
+        # self.imagens_dino_voador.append(self.imagem2)
 
-        self.imagem1 = sprite_sheet.subsurface((32*3, 0),(32, 32))
-        self.imagem2 = sprite_sheet.subsurface((32*4, 0),(32, 32))
-
-        self.imagem1 = pygame.transform.scale(self.imagem1,(32*3, 32*3))
-        self.imagem2 = pygame.transform.scale(self.imagem2,(32*3, 32*3))
-
-        self.imagens_dino_voador.append(self.imagem1)
-        self.imagens_dino_voador.append(self.imagem2)
+        self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador0.png'))
+        self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador1.png'))
+        self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador2.png'))
+        self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador3.png'))
 
         self.index_lista = 0
         self.image = self.imagens_dino_voador[self.index_lista]
+        self.image = pygame.transform.scale(self.image, (28*2, 43*2))
         self.mask = pygame.mask.from_surface(self.image)
 
         self.rect = self.image.get_rect() # Aqui eu estou deixando a imagem retâgunlar para poder manipulá-la
@@ -194,31 +211,33 @@ class DinoVoador(pygame.sprite.Sprite):
                 self.rect.x = self.rect.x - velocidade_jogo
             if self.index_lista > 1:
                 self.index_lista = 0
-            self.index_lista += 0.25
+            self.index_lista += 0.20
             self.image = self.imagens_dino_voador[int(self.index_lista)]
+        self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
 
-class OvoDino(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = sprite_ovo_dino.subsurface((0, 0), (1024, 1024))
-        self.image = pygame.transform.scale(self.image, (1024//18, 1024//18))
-        self.rect = self.image.get_rect()
-        self.rect.center = (300, 150)
-        self.sorteio_ovo = sorteio_ovo
 
-    def update(self):
-        if self.sorteio_ovo == 2:
-            if self.rect.topright[0] < 0:
-                self.rect.x = LARGURA
-            else:
-                self.rect.x = self.rect.x - velocidade_jogo
+# class OvoDino(pygame.sprite.Sprite):
+#     def __init__(self):
+#         pygame.sprite.Sprite.__init__(self)
+#         self.image = sprite_ovo_dino.subsurface((0, 0), (1024, 1024))
+#         self.image = pygame.transform.scale(self.image, (1024//18, 1024//18))
+#         self.rect = self.image.get_rect()
+#         self.rect.center = (300, 320)
+#
+#
+#     def update(self):
+#             if self.rect.topright[0] < 0:
+#                 self.rect.x = LARGURA
+#             else:
+#                 self.rect.x = self.rect.x - velocidade_jogo
+#
 
 
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
-ovo_dino = OvoDino()
+# ovo_dino = OvoDino()
 todas_as_sprites.add(dino)
-todas_as_sprites.add(ovo_dino)
+# todas_as_sprites.add(ovo_dino)
 cacto = Cacto()
 todas_as_sprites.add(cacto)
 
