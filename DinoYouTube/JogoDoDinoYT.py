@@ -25,14 +25,16 @@ sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpriteshee
 background_art = pygame.image.load(os.path.join(diretorio_imagens, 'pre_historia.png')).convert()
 sprite_ovo_dino = pygame.image.load(os.path.join(diretorio_imagens, 'ovo_dino.png'))
 imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
-
 colidiu = False
 escolha_obstaculo = choice([0, 1])
-
-
 velocidade_jogo = 10
-
 pontos = 0
+pontuacao_maxima = 0
+if os.path.exists('pontuacao.txt'):
+    with open('pontuacao.txt', 'r') as file:
+        pontuacao_maxima = int(file.read())
+else:
+    pontuacao_maxima = 0
 def exibe_mensagem(msg, tamanho, cor):
     fonte = pygame.font.SysFont('choco', tamanho, True, False) # objeto armazenando a fonte , penúltimo argumento, negrito, último argumento, itálico
     mensagem = f'{msg}' # Essa variável vai mudar a cada iteração do loop principal do jogo
@@ -247,6 +249,11 @@ def mostrar_titulo_jogo():
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
+def mostrar_painel(pontuacao):
+    fonte = pygame.font.SysFont("choco", 50)
+    texto = fonte.render(f'Sua pontuação é {pontuacao}', False, (238, 104, 0), None)
+    tela.blit(texto,[200, 150])
+    pygame.display.flip()
 
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
@@ -260,6 +267,7 @@ grupo_obstaculos.add(arvore)
 dino_voador = DinoVoador()
 todas_as_sprites.add(dino_voador)
 grupo_obstaculos.add(dino_voador)
+desvanecimento = 0
 for c in range(LARGURA*2//64):
     chao = Chao(c)
     todas_as_sprites.add(chao)
@@ -312,10 +320,18 @@ while deve_continuar:
         dino.colidir()
         colidiu = True
     if colidiu == True:
-        game_over = exibe_mensagem("GAME OVER", 40, (0,0,0))
+        if pontos > pontuacao_maxima:
+            pontuacao_maxima = pontos
+            with open('pontuacao.txt', 'w') as file:
+                file.write(str(pontuacao_maxima))
+        if desvanecimento < LARGURA:
+            desvanecimento += 20
+            pygame.draw.rect(tela,(0,0,0),(0, 0, LARGURA, ALTURA))
+        game_over = exibe_mensagem("GAME OVER", 40, (204,138,0))
         tela.blit(game_over, (LARGURA//2, ALTURA//2))
-        texto_reiniciar = exibe_mensagem('Pressione r para reiniciar', 26, (0,0,0))
+        texto_reiniciar = exibe_mensagem('Pressione r para reiniciar', 26, (204,138,0))
         tela.blit(texto_reiniciar, (LARGURA//2, (ALTURA//2)+60 ))
+        mostrar_painel(pontos)
     else:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
@@ -327,5 +343,6 @@ while deve_continuar:
             velocidade_jogo += 0
         else:
             velocidade_jogo += 1
+    desvanecimento = 0
     tela.blit(texto_pontos, (520, 30))
     pygame.display.flip()
