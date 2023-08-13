@@ -74,13 +74,13 @@ class Dino(pygame.sprite.Sprite):
 
         self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
-        self.image = pygame.transform.scale(self.image,(48*3,41*3))
+        self.image = pygame.transform.scale(self.image, (48*2, 41*2))
         # O atributo self.rect foi criado para armazenar o valor da imagem da sprite/frame, a partir daí ele vai pegar o retângulo dela
         self.rect = self.image.get_rect()
         # Posicione o centro desse retângulo na posição 100x e 100y
         self.rect.center = (100, ALTURA-64)
         self.pulo = False
-        self.pos_y_inicial = ALTURA-108 - 96//2
+        self.pos_y_inicial = ALTURA-68 - 96//2
         self.mask = pygame.mask.from_surface(self.image)
         # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
 
@@ -97,7 +97,7 @@ class Dino(pygame.sprite.Sprite):
     def update(self):
         if self.pulo == True:
             self.rect.y = self.rect.y - 60
-            if self.rect.y <= 20:
+            if self.rect.y <= 70:
                 self.pulo = False
         else:
             if self.rect.y < self.pos_y_inicial:
@@ -108,16 +108,18 @@ class Dino(pygame.sprite.Sprite):
             self.index_lista = 0
         self.index_lista = self.index_lista + 0.25
         self.image = self.imagens_dinossauro[int(self.index_lista)]
-        self.image = pygame.transform.scale(self.image, (48 * 3, 41 * 3))
+        self.image = pygame.transform.scale(self.image, (48 * 2, 41 * 2))
 
 class Nuvens(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        # 1.ª tupla mostra a posição em x e em y -> A sprite está na posição 7, então deve-se multiplicar 32(que é a posição em x do
-        # 1.º elemento) e multiplicar esse valor por 7 para que ele chege até a 7.ª posição e recorte
-        self.image = sprite_sheet.subsurface((32*7, 0), (32, 32))
 
-        self.image = pygame.transform.scale(self.image,(32*3, 32*3))  # Aumenta o tamanho da sprite
+        self.lista_nuvens = []
+        self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite1.png'))
+        self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite0.png'))
+        self.index_lista = 0
+        self.image = self.lista_nuvens[self.index_lista]
+        self.image = pygame.transform.scale(self.image,(32*1.2, 32*1.2))  # Aumenta o tamanho da sprite
         self.rect = self.image.get_rect()
 
         self.rect.y = randrange(50, 200, 50)  # Vai deixar posicionado na tela na posição indicada entre parânteses
@@ -186,7 +188,7 @@ class DinoVoador(pygame.sprite.Sprite):
 
         self.index_lista = 0
         self.image = self.imagens_dino_voador[self.index_lista]
-        self.image = pygame.transform.scale(self.image, (28*3, 43*3))
+        self.image = pygame.transform.scale(self.image, (28*2, 43*2))
         self.mask = pygame.mask.from_surface(self.image)
 
         self.rect = self.image.get_rect() # Aqui eu estou deixando a imagem retâgunlar para poder manipulá-la
@@ -206,7 +208,7 @@ class DinoVoador(pygame.sprite.Sprite):
                 self.index_lista = 0
             self.index_lista += 0.20
             self.image = self.imagens_dino_voador[int(self.index_lista)]
-        self.image = pygame.transform.scale(self.image, (28 * 3, 43 * 3))
+        self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
 
 
 # class OvoDino(pygame.sprite.Sprite):
