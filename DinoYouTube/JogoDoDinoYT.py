@@ -60,13 +60,6 @@ class Dino(pygame.sprite.Sprite):
         self.musica_fundo.set_volume(1)
        # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
-        #
-        # for i in range(3):
-        #
-        #     # 1.ª Tupla, posição em x e y da imagem. 2.ª tupla: tamanho da imagem.
-        #     img = sprite_sheet.subsurface((i*32, 0), (32, 32))
-        #     img = pygame.transform.scale(img, (32*3, 32*3))
-        #     self.imagens_dinossauro.append(img)
 
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo0.png'))
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo1.png'))
@@ -233,7 +226,12 @@ class DinoVoador(pygame.sprite.Sprite):
 #             else:
 #                 self.rect.x = self.rect.x - velocidade_jogo
 #
-
+AMARELO = (204, 138, 0)
+def mostrar_titulo():
+    fonte = pygame.font.SysFont('choco', 50)
+    titulo = fonte.render('HÁ 65 MILHÕES DE ANOS ATRÁS...',False, AMARELO, None)
+    tela.blit(titulo,[30, 150])
+    pygame.display.flip()
 
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
@@ -262,6 +260,10 @@ relogio = pygame.time.Clock()
 
 deve_continuar = True
 dino.musica_fundo.play()
+mostrar_titulo()
+pygame.time.delay(3000)
+
+
 while deve_continuar:
     relogio.tick(30)
 
