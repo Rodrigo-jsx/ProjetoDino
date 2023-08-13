@@ -271,6 +271,7 @@ desvanecimento = 0
 for c in range(LARGURA*2//64):
     chao = Chao(c)
     todas_as_sprites.add(chao)
+ddd  
 
 for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
     nuvens = Nuvens()
