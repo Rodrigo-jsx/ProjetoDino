@@ -278,7 +278,6 @@ for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas u
 relogio = pygame.time.Clock()
 deve_continuar = True
 
-
 mostrar_texto()
 dino.rugir()
 dino.musica_fundo.play()
@@ -290,7 +289,7 @@ pygame.time.delay(2000)
 
 while deve_continuar:
     relogio.tick(30)
-    tela.fill(BRANCO)
+
     tela.blit(imagem_fundo, (0, 0))
     for event in pygame.event.get():
         if event.type == QUIT:
