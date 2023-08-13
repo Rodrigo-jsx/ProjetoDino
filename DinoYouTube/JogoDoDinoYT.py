@@ -47,7 +47,7 @@ def reiniciar_jogo():
     velocidade_jogo = 10
     colidiu = False
     dino_voador.rect.x = LARGURA
-    cacto.rect.x = LARGURA
+    arvore.rect.x = LARGURA
     escolha_obstaculo = choice([0, 1])
 class Dino(pygame.sprite.Sprite):
     def __init__(self):
@@ -155,7 +155,7 @@ class Chao(pygame.sprite.Sprite):
         self.rect.x = self.rect.x - 10
 
 
-class Cacto(pygame.sprite.Sprite):
+class Arvore(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.imagem_arvore = []
@@ -253,10 +253,10 @@ dino = Dino()
 # ovo_dino = OvoDino()
 todas_as_sprites.add(dino)
 # todas_as_sprites.add(ovo_dino)
-cacto = Cacto()
-todas_as_sprites.add(cacto)
+arvore = Arvore()
+todas_as_sprites.add(arvore)
 grupo_obstaculos = pygame.sprite.Group()
-grupo_obstaculos.add(cacto)
+grupo_obstaculos.add(arvore)
 dino_voador = DinoVoador()
 todas_as_sprites.add(dino_voador)
 grupo_obstaculos.add(dino_voador)
@@ -295,18 +295,18 @@ while deve_continuar:
             if event.key == K_r and colidiu == True:
                 reiniciar_jogo()
     # Método abaixo verifica se houve alguma colisão com as sprites, e recebe como argumento
-    # O objeto dino, o grupo de obstáculos, que está incluído o cacto, e mais tarde, o pássaro
-    # O dokill, que se for setado como False, fará com que o cacto não apareça quando colidido
+    # O objeto dino, o grupo de obstáculos, que está incluído o arvore, e mais tarde, o pássaro
+    # O dokill, que se for setado como False, fará com que o arvore não apareça quando colidido
     # e a última flag, é para verificar se houve a colisão ou não
     colisoes = pygame.sprite.spritecollide(dino, grupo_obstaculos, False, pygame.sprite.collide_mask)
     # colisoes é uma lista vazia quando não tem nenhuma colisão, sem nenhum elemento.
     # Quando houver uma colisão, essa lista colisoes vai receber o objeto que colidiu com o dinossauro
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
-    if cacto.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:
+    if arvore.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:
         escolha_obstaculo = choice([0, 1])
-        cacto.rect.x = LARGURA
+        arvore.rect.x = LARGURA
         dino_voador.rect.x = LARGURA
-        cacto.escolha = escolha_obstaculo
+        arvore.escolha = escolha_obstaculo
         dino_voador.escolha = escolha_obstaculo
     if colisoes and colidiu == False:
         dino.colidir()
