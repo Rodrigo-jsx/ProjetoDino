@@ -1,7 +1,11 @@
+# Credits to TSR
+# All rights belong to ther owners
+
 import pygame
 from pygame.locals import *
 from random import randrange, choice
 import os
+
 
 diretorio_principal = os.path.dirname(__file__)  # Indica o diretório/pasta atual
 diretorio_imagens = os.path.join(diretorio_principal, 'imagens')  # Junta a pasta principal com o diretório de imagens
@@ -115,11 +119,11 @@ class Nuvens(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.lista_nuvens = []
-        self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite1.png'))
         self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite0.png'))
+        self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite1.png'))
         self.index_lista = 0
         self.image = self.lista_nuvens[self.index_lista]
-        self.image = pygame.transform.scale(self.image,(32*1.2, 32*1.2))  # Aumenta o tamanho da sprite
+        self.image = pygame.transform.scale(self.image,(32*2, 32*2))  # Aumenta o tamanho da sprite
         self.rect = self.image.get_rect()
 
         self.rect.y = randrange(50, 200, 50)  # Vai deixar posicionado na tela na posição indicada entre parânteses
@@ -130,8 +134,11 @@ class Nuvens(pygame.sprite.Sprite):
             self.rect.x = LARGURA
             self.rect.y = randrange(50, 200, 50)
         self.rect.x = self.rect.x - velocidade_jogo
-
-
+        if self.index_lista > 1:
+            self.index_lista = 0
+        self.index_lista += 0.20
+        self.image = self.lista_nuvens[int(self.index_lista)]
+        self.image = pygame.transform.scale(self.image, (32*2, 32*2))
 class Chao(pygame.sprite.Sprite):
     def __init__(self, pos_x):
         pygame.sprite.Sprite.__init__(self)
@@ -176,6 +183,7 @@ class Cacto(pygame.sprite.Sprite):
             self.index_lista += 0.20
             self.image = self.imagem_arvore[int(self.index_lista)]
         self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
+
 class DinoVoador(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
