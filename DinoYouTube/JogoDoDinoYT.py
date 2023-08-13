@@ -80,7 +80,7 @@ class Dino(pygame.sprite.Sprite):
         # Posicione o centro desse retângulo na posição 100x e 100y
         self.rect.center = (100, ALTURA-64)
         self.pulo = False
-        self.pos_y_inicial = ALTURA-64 - 96//2
+        self.pos_y_inicial = ALTURA-68 - 96//2
         self.mask = pygame.mask.from_surface(self.image)
         # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
 
