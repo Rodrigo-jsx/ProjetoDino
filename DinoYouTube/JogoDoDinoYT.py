@@ -261,7 +261,7 @@ relogio = pygame.time.Clock()
 deve_continuar = True
 dino.musica_fundo.play()
 mostrar_titulo()
-pygame.time.delay(3000)
+pygame.time.delay(4000)
 
 
 while deve_continuar:
