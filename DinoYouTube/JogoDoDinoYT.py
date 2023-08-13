@@ -14,7 +14,7 @@ ALTURA = 480
 BRANCO = (255, 255, 255)
 
 tela = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption('Jogo do Dino')
+pygame.display.set_caption('Dino Runner')
 
 # Cria uma variável que carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
 sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
@@ -30,9 +30,9 @@ velocidade_jogo = 10
 
 pontos = 0
 def exibe_mensagem(msg, tamanho, cor):
-    fonte = pygame.font.SysFont('comicsansms', tamanho, True, False) # objeto armazenando a fonte , penúltimo argumento, negrito, último argumento, itálico
+    fonte = pygame.font.SysFont('choco', tamanho, True, False) # objeto armazenando a fonte , penúltimo argumento, negrito, último argumento, itálico
     mensagem = f'{msg}' # Essa variável vai mudar a cada iteração do loop principal do jogo
-    texto_formatado = fonte.render(mensagem, True, cor) # mensagem, anti-alising(serrilhado, se você quer que o texto seja serrilhado, coloque True)
+    texto_formatado = fonte.render(mensagem, False, cor) # mensagem, anti-alising(serrilhado, se você quer que o texto seja serrilhado, coloque True)
     return texto_formatado
 
 def reiniciar_jogo():
@@ -227,11 +227,18 @@ class DinoVoador(pygame.sprite.Sprite):
 #                 self.rect.x = self.rect.x - velocidade_jogo
 #
 AMARELO = (204, 138, 0)
-def mostrar_titulo():
+def mostrar_texto():
     fonte = pygame.font.SysFont('choco', 50)
     titulo = fonte.render('HÁ 65 MILHÕES DE ANOS ATRÁS...',False, AMARELO, None)
     tela.blit(titulo,[30, 150])
     pygame.display.flip()
+
+def mostrar_titulo_jogo():
+    fonte = pygame.font.SysFont('choco', 50)
+    texto = fonte.render('DINO RUNNER', False, AMARELO, None)
+    tela.blit(texto, [200, 150])
+    pygame.display.flip()
+
 
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
@@ -240,13 +247,10 @@ todas_as_sprites.add(dino)
 # todas_as_sprites.add(ovo_dino)
 cacto = Cacto()
 todas_as_sprites.add(cacto)
-
 grupo_obstaculos = pygame.sprite.Group()
 grupo_obstaculos.add(cacto)
-
 dino_voador = DinoVoador()
 todas_as_sprites.add(dino_voador)
-
 grupo_obstaculos.add(dino_voador)
 for c in range(LARGURA*2//64):
     chao = Chao(c)
@@ -255,21 +259,20 @@ for c in range(LARGURA*2//64):
 for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
     nuvens = Nuvens()
     todas_as_sprites.add(nuvens)
-
 relogio = pygame.time.Clock()
-
 deve_continuar = True
 dino.musica_fundo.play()
-mostrar_titulo()
-pygame.time.delay(4000)
-
+mostrar_texto()
+pygame.time.delay(6000)
+tela.fill((0, 0, 0))
+pygame.time.delay(2000)
+mostrar_titulo_jogo()
+pygame.time.delay(2000)
 
 while deve_continuar:
     relogio.tick(30)
-
     tela.fill(BRANCO)
     tela.blit(imagem_fundo, (0, 0))
-
     for event in pygame.event.get():
         if event.type == QUIT:
             deve_continuar = False
@@ -283,7 +286,6 @@ while deve_continuar:
                 dino.atirar()
             if event.key == K_r and colidiu == True:
                 reiniciar_jogo()
-
     # Método abaixo verifica se houve alguma colisão com as sprites, e recebe como argumento
     # O objeto dino, o grupo de obstáculos, que está incluído o cacto, e mais tarde, o pássaro
     # O dokill, que se for setado como False, fará com que o cacto não apareça quando colidido
@@ -292,33 +294,30 @@ while deve_continuar:
     # colisoes é uma lista vazia quando não tem nenhuma colisão, sem nenhum elemento.
     # Quando houver uma colisão, essa lista colisoes vai receber o objeto que colidiu com o dinossauro
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
-
     if cacto.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:
         escolha_obstaculo = choice([0, 1])
         cacto.rect.x = LARGURA
         dino_voador.rect.x = LARGURA
         cacto.escolha = escolha_obstaculo
         dino_voador.escolha = escolha_obstaculo
-
     if colisoes and colidiu == False:
         dino.colidir()
         colidiu = True
     if colidiu == True:
         game_over = exibe_mensagem("GAME OVER", 40, (0,0,0))
         tela.blit(game_over, (LARGURA//2, ALTURA//2))
-        texto_reiniciar = exibe_mensagem('Pressione r para reiniciar', 20, (0,0,0))
+        texto_reiniciar = exibe_mensagem('Pressione r para reiniciar', 26, (0,0,0))
         tela.blit(texto_reiniciar, (LARGURA//2, (ALTURA//2)+60 ))
     else:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
-        texto_pontos = exibe_mensagem(pontos, 40, (0, 0, 0))
+        texto_pontos = exibe_mensagem(pontos, 58, (0, 0, 0))
     if pontos % 100 == 0 and colidiu == False:
         dino.som_pontuacao.play()
         if velocidade_jogo >= 23:
             velocidade_jogo += 0
         else:
             velocidade_jogo += 1
-
     tela.blit(texto_pontos, (520, 30))
     pygame.display.flip()
