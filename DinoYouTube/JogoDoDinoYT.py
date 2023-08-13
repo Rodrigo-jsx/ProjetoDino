@@ -74,13 +74,13 @@ class Dino(pygame.sprite.Sprite):
 
         self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
-        self.image = pygame.transform.scale(self.image,(48*2,41*2))
+        self.image = pygame.transform.scale(self.image,(48*3,41*3))
         # O atributo self.rect foi criado para armazenar o valor da imagem da sprite/frame, a partir daí ele vai pegar o retângulo dela
         self.rect = self.image.get_rect()
         # Posicione o centro desse retângulo na posição 100x e 100y
         self.rect.center = (100, ALTURA-64)
         self.pulo = False
-        self.pos_y_inicial = ALTURA-68 - 96//2
+        self.pos_y_inicial = ALTURA-108 - 96//2
         self.mask = pygame.mask.from_surface(self.image)
         # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
 
@@ -96,8 +96,8 @@ class Dino(pygame.sprite.Sprite):
 
     def update(self):
         if self.pulo == True:
-            self.rect.y = self.rect.y - 20
-            if self.rect.y <= 200:
+            self.rect.y = self.rect.y - 60
+            if self.rect.y <= 20:
                 self.pulo = False
         else:
             if self.rect.y < self.pos_y_inicial:
@@ -108,7 +108,7 @@ class Dino(pygame.sprite.Sprite):
             self.index_lista = 0
         self.index_lista = self.index_lista + 0.25
         self.image = self.imagens_dinossauro[int(self.index_lista)]
-        self.image = pygame.transform.scale(self.image, (48 * 2, 41 * 2))
+        self.image = pygame.transform.scale(self.image, (48 * 3, 41 * 3))
 
 class Nuvens(pygame.sprite.Sprite):
     def __init__(self):
@@ -150,11 +150,15 @@ class Cacto(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.imagem_arvore = []
-        self.imagem_arvore = pygame.image.load('imagens/arvore_pre_historia.png')
+        self.imagem_arvore.append(pygame.image.load('imagens/arvore_pre_historia0.png'))
+        self.imagem_arvore.append(pygame.image.load('imagens/arvore_pre_historia1.png'))
+
         # self.image = pygame.transform.scale()
-        self.image = pygame.transform.scale(self.imagem_arvore, (32*2, 32*2))
+        self.index_lista = 0
+        self.image = self.imagem_arvore[self.index_lista]
+        self.image = pygame.transform.scale(self.image, (32*2, 32*2))
         self.rect = self.image.get_rect()
-        self.rect.center = (LARGURA, ALTURA - 64)
+        self.rect.center = (LARGURA, ALTURA - 87)
         self.mask = pygame.mask.from_surface(self.image) # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
         self.escolha = escolha_obstaculo
         self.rect.x = LARGURA
@@ -165,22 +169,16 @@ class Cacto(pygame.sprite.Sprite):
                 self.rect.x = LARGURA
             else:
                 self.rect.x = self.rect.x - velocidade_jogo
-
+            if self.index_lista > 1:
+                self.index_lista = 0
+            self.index_lista += 0.20
+            self.image = self.imagem_arvore[int(self.index_lista)]
+        self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
 class DinoVoador(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
         self.imagens_dino_voador = []
-        #
-        # self.imagem1 = sprite_sheet.subsurface((32*3, 0),(32, 32))
-        # self.imagem2 = sprite_sheet.subsurface((32*4, 0),(32, 32))
-        #
-        # self.imagem1 = pygame.transform.scale(self.imagem1,(32*3, 32*3))
-        # self.imagem2 = pygame.transform.scale(self.imagem2,(32*3, 32*3))
-        #
-        # self.imagens_dino_voador.append(self.imagem1)
-        # self.imagens_dino_voador.append(self.imagem2)
-
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador0.png'))
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador1.png'))
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador2.png'))
@@ -188,11 +186,11 @@ class DinoVoador(pygame.sprite.Sprite):
 
         self.index_lista = 0
         self.image = self.imagens_dino_voador[self.index_lista]
-        self.image = pygame.transform.scale(self.image, (28*2, 43*2))
+        self.image = pygame.transform.scale(self.image, (28*3, 43*3))
         self.mask = pygame.mask.from_surface(self.image)
 
         self.rect = self.image.get_rect() # Aqui eu estou deixando a imagem retâgunlar para poder manipulá-la
-        self.rect.center = (LARGURA, 300)
+        self.rect.center = (LARGURA, 200)
 
         self.escolha = escolha_obstaculo
 
@@ -208,7 +206,7 @@ class DinoVoador(pygame.sprite.Sprite):
                 self.index_lista = 0
             self.index_lista += 0.20
             self.image = self.imagens_dino_voador[int(self.index_lista)]
-        self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
+        self.image = pygame.transform.scale(self.image, (28 * 3, 43 * 3))
 
 
 # class OvoDino(pygame.sprite.Sprite):
@@ -229,7 +227,7 @@ class DinoVoador(pygame.sprite.Sprite):
 AMARELO = (204, 138, 0)
 def mostrar_texto():
     fonte = pygame.font.SysFont('choco', 50)
-    titulo = fonte.render('HÁ 65 MILHÕES DE ANOS ATRÁS...',False, AMARELO, None)
+    titulo = fonte.render('HÁ 65 MILHÕES DE ANOS ATRÁS...', False, AMARELO, None)
     tela.blit(titulo,[30, 150])
     pygame.display.flip()
 
