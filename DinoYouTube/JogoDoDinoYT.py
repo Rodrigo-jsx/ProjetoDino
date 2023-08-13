@@ -56,14 +56,14 @@ class Dino(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.som_pulo = pygame.mixer.Sound(os.path.join(diretorio_sons, 'jump_sound.wav'))
         self.som_pulo.set_volume(1)
-        self.som_do_tiro = pygame.mixer.Sound(os.path.join(diretorio_sons, 'tirododino.wav'))
-        self.som_do_tiro.set_volume(1)
         self.som_da_colisao = pygame.mixer.Sound(os.path.join(diretorio_sons, 'death_sound.wav'))
         self.som_da_colisao.set_volume(1)
         self.som_pontuacao = pygame.mixer.Sound(os.path.join(diretorio_sons, 'score_sound.wav'))
         self.som_pontuacao.set_volume(1)
         self.musica_fundo = pygame.mixer.Sound(os.path.join(diretorio_sons, 'musica_dino.wav'))
         self.musica_fundo.set_volume(1)
+        self.som_do_dino = pygame.mixer.Sound(os.path.join(diretorio_sons,'som_do_dino.wav'))
+        self.som_do_dino.set_volume(1)
        # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
 
@@ -94,8 +94,8 @@ class Dino(pygame.sprite.Sprite):
         self.pulo = True
         self.som_pulo.play()
 
-    def atirar(self):
-        self.som_do_tiro.play()
+    def rugir(self):
+        self.som_do_dino.play()
 
     def colidir(self):
         self.som_da_colisao.play()
@@ -277,8 +277,11 @@ for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas u
     todas_as_sprites.add(nuvens)
 relogio = pygame.time.Clock()
 deve_continuar = True
-dino.musica_fundo.play()
+
+
 mostrar_texto()
+dino.rugir()
+dino.musica_fundo.play()
 pygame.time.delay(6000)
 tela.fill((0, 0, 0))
 pygame.time.delay(2000)
@@ -298,8 +301,7 @@ while deve_continuar:
                     pass
                 else:
                     dino.pular()
-            if event.key == K_f:
-                dino.atirar()
+
             if event.key == K_r and colidiu == True:
                 reiniciar_jogo()
     # Método abaixo verifica se houve alguma colisão com as sprites, e recebe como argumento
