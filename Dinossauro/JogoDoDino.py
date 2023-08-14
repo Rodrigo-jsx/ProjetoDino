@@ -1,5 +1,6 @@
 # Credits to TSR
 # All rights belong to ther owners
+import random
 
 import pygame
 from pygame.locals import *
@@ -221,21 +222,27 @@ class DinoVoador(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
 
 
-# class OvoDino(pygame.sprite.Sprite):
-#     def __init__(self):
-#         pygame.sprite.Sprite.__init__(self)
-#         self.image = sprite_ovo_dino.subsurface((0, 0), (1024, 1024))
-#         self.image = pygame.transform.scale(self.image, (1024//18, 1024//18))
-#         self.rect = self.image.get_rect()
-#         self.rect.center = (300, 320)
-#
-#
-#     def update(self):
-#             if self.rect.topright[0] < 0:
-#                 self.rect.x = LARGURA
-#             else:
-#                 self.rect.x = self.rect.x - velocidade_jogo
-#
+class OvoDino(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('imagens/ovo_dino.png')
+        self.image = pygame.transform.scale(self.image, (1024//18, 1024//18))
+        self.rect = self.image.get_rect()
+        self.rect.center = (300, 320)
+        self.rect.x = LARGURA
+        self.rect.y = random.randint(300, 395)
+        self.sorteio = 0
+        # LARGURA = 640
+        # ALTURA = 480
+
+    def update(self):
+        self.sorteio = random.randint(100, 300)
+        if self.sorteio == 100:
+            if self.rect.topright[0] < 0:
+                self.rect.x = LARGURA
+            else:
+                self.rect.x = self.rect.x - velocidade_jogo
+
 AMARELO = (204, 138, 0)
 def mostrar_texto():
     fonte = pygame.font.SysFont('choco', 50)
@@ -252,14 +259,14 @@ def mostrar_titulo_jogo():
 def mostrar_painel(pontuacao):
     fonte = pygame.font.SysFont("choco", 50)
     texto = fonte.render(f'Sua pontuação é {pontuacao}', False, (238, 104, 0), None)
-    tela.blit(texto,[200, 150])
+    tela.blit(texto, [200, 150])
     pygame.display.flip()
 
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
-# ovo_dino = OvoDino()
+ovo_dino = OvoDino()
 todas_as_sprites.add(dino)
-# todas_as_sprites.add(ovo_dino)
+todas_as_sprites.add(ovo_dino)
 arvore = Arvore()
 todas_as_sprites.add(arvore)
 grupo_obstaculos = pygame.sprite.Group()
@@ -271,7 +278,7 @@ desvanecimento = 0
 for c in range(LARGURA*2//64):
     chao = Chao(c)
     todas_as_sprites.add(chao)
-ddd  
+
 
 for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
     nuvens = Nuvens()
@@ -304,6 +311,8 @@ while deve_continuar:
 
             if event.key == K_r and colidiu == True:
                 reiniciar_jogo()
+            if event.key == K_ESCAPE and colidiu == True:
+                deve_continuar = False
     # Método abaixo verifica se houve alguma colisão com as sprites, e recebe como argumento
     # O objeto dino, o grupo de obstáculos, que está incluído o arvore, e mais tarde, o pássaro
     # O dokill, que se for setado como False, fará com que o arvore não apareça quando colidido
@@ -329,10 +338,12 @@ while deve_continuar:
         if desvanecimento < LARGURA:
             desvanecimento += 20
             pygame.draw.rect(tela,(0,0,0),(0, 0, LARGURA, ALTURA))
-        game_over = exibe_mensagem("GAME OVER", 40, (204,138,0))
+        game_over = exibe_mensagem("FIM DE JOGO", 40, (204,138,0))
         tela.blit(game_over, (LARGURA//2, ALTURA//2))
         texto_reiniciar = exibe_mensagem('Pressione r para reiniciar', 26, (204,138,0))
-        tela.blit(texto_reiniciar, (LARGURA//2, (ALTURA//2)+60 ))
+        texto_sair = exibe_mensagem('ou ESC para sair', 26, (204,138,0))
+        tela.blit(texto_reiniciar, (LARGURA//2, (ALTURA//2)+60))
+        tela.blit(texto_sair, (LARGURA//2, (ALTURA//2)+75))
         mostrar_painel(pontos)
     else:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
