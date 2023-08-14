@@ -262,6 +262,12 @@ def mostrar_painel(pontuacao):
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
+def mostrar_pontacao_maxima(maxima_pontuacao):
+    fonte = pygame.font.SysFont('choco',50)
+    texto = fonte.render(f'Máxima pontuação:{maxima_pontuacao}',False, (238, 104, 0), None)
+    tela.blit(texto,[200, 175])
+    pygame.display.update()
+
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
 ovo_dino = OvoDino()
@@ -345,6 +351,7 @@ while deve_continuar:
         tela.blit(texto_reiniciar, (LARGURA//2, (ALTURA//2)+60))
         tela.blit(texto_sair, (LARGURA//2, (ALTURA//2)+75))
         mostrar_painel(pontos)
+        mostrar_pontacao_maxima(pontuacao_maxima)
     else:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
