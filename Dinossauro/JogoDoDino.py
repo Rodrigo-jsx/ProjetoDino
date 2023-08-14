@@ -36,7 +36,7 @@ if os.path.exists('pontuacao.txt'):
         pontuacao_maxima = int(file.read())
 else:
     pontuacao_maxima = 0
-def exibe_mensagem(msg, tamanho, cor):
+def exibe_mensagem(msg, tamanho, cor):  # Exibe mensagens de pontos, game over e sair
     fonte = pygame.font.SysFont('choco', tamanho, True, False) # objeto armazenando a fonte , penúltimo argumento, negrito, último argumento, itálico
     mensagem = f'{msg}' # Essa variável vai mudar a cada iteração do loop principal do jogo
     texto_formatado = fonte.render(mensagem, False, cor) # mensagem, anti-alising(serrilhado, se você quer que o texto seja serrilhado, coloque True)
@@ -256,16 +256,16 @@ def mostrar_titulo_jogo():
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
-def mostrar_painel(pontuacao):
+def mostrar_painel(pontuacao): # Mostra a pontuação no final do jogo
     fonte = pygame.font.SysFont("choco", 50)
     texto = fonte.render(f'Sua pontuação é {pontuacao}', False, (238, 104, 0), None)
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
-def mostrar_pontuacao_maxima(maxima_pontuacao):
+def mostrar_pontuacao_maxima(maxima_pontuacao):  # Mostra
     fonte = pygame.font.SysFont('choco', 50)
-    texto = fonte.render(f'Pontuação máxima: {maxima_pontuacao}', False, (238, 104, 0), None)
-    tela.blit(texto, [200, 155])
+    texto = fonte.render(f'Pontuação máxima: {maxima_pontuacao}', False, (0, 0, 0), None)
+    tela.blit(texto, [200, 100])
 
 
 
@@ -308,7 +308,6 @@ while deve_continuar:
     tela.fill([0,0,0])
     tela.blit(imagem_fundo, (0, 0))
     for event in pygame.event.get():
-
         if event.type == QUIT:
             deve_continuar = False
         if event.type == KEYDOWN:
@@ -360,7 +359,7 @@ while deve_continuar:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
-        texto_pontos = exibe_mensagem(pontos, 58, (0, 0, 0))
+        texto_pontos = exibe_mensagem(pontos, 50, (0, 0, 0))
     if pontos % 100 == 0 and colidiu == False:
         dino.som_pontuacao.play()
         if velocidade_jogo >= 23:
@@ -370,6 +369,6 @@ while deve_continuar:
     desvanecimento = 0
 
     tela.blit(texto_pontos, (520, 30))
-
+    if colidiu == False:
+        mostrar_pontuacao_maxima(pontuacao_maxima)
     pygame.display.update()
-    mostrar_pontuacao_maxima(pontuacao_maxima)
