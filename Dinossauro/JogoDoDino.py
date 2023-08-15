@@ -308,7 +308,7 @@ while deve_continuar:
         tela.blit(texto_sair, (LARGURA//2, (ALTURA//2)+75))
         mostrar_pontuacao_no_final(pontos)
     else:
-        pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
+        pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e na medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
         mostrar_pontuacao_maxima(pontuacao_maxima)
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
