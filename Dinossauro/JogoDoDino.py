@@ -1,30 +1,24 @@
-# Credits to TSR
+# Credits to the dino bird to TSR
 # All rights belong to ther owners
-import random
 
 import pygame
 from pygame.locals import *
 from random import randrange, choice
 import os
 
-
 diretorio_principal = os.path.dirname(__file__)  # Indica o diretório/pasta atual
 diretorio_imagens = os.path.join(diretorio_principal, 'imagens')  # Junta a pasta principal com o diretório de imagens
 diretorio_sons = os.path.join(diretorio_principal, 'sons')  # Junta o diretório de sons com a pasta dos sons
-
 pygame.init()  # Inicia os módulos pygame
 pygame.mixer.init()
 LARGURA = 640
 ALTURA = 480
 BRANCO = (255, 255, 255)
-
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption('Dino Runner')
-
 # Cria uma variável que carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
 sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
 background_art = pygame.image.load(os.path.join(diretorio_imagens, 'pre_historia.png')).convert()
-sprite_ovo_dino = pygame.image.load(os.path.join(diretorio_imagens, 'ovo_dino.png'))
 imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
 colidiu = False
 escolha_obstaculo = choice([0, 1])
@@ -67,7 +61,6 @@ class Dino(pygame.sprite.Sprite):
         self.som_do_dino.set_volume(1)
        # Foi criada uma lista de imagens
         self.imagens_dinossauro = []
-
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo0.png'))
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo1.png'))
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo2.png'))
@@ -78,7 +71,6 @@ class Dino(pygame.sprite.Sprite):
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo7.png'))
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo8.png'))
         self.imagens_dinossauro.append(pygame.image.load('imagens/dino_correndo9.png'))
-
         self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
         self.image = pygame.transform.scale(self.image, (48*2, 41*2))
@@ -90,6 +82,7 @@ class Dino(pygame.sprite.Sprite):
         self.pos_y_inicial = ALTURA-68 - 96//2
         self.mask = pygame.mask.from_surface(self.image)
         # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
+        self.protecao = False
 
     def pular(self):
         self.pulo = True
@@ -120,7 +113,6 @@ class Dino(pygame.sprite.Sprite):
 class Nuvens(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-
         self.lista_nuvens = []
         self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite0.png'))
         self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite1.png'))
@@ -128,7 +120,6 @@ class Nuvens(pygame.sprite.Sprite):
         self.image = self.lista_nuvens[self.index_lista]
         self.image = pygame.transform.scale(self.image,(32*2, 32*2))  # Aumenta o tamanho da sprite
         self.rect = self.image.get_rect()
-
         self.rect.y = randrange(50, 200, 50)  # Vai deixar posicionado na tela na posição indicada entre parânteses
         self.rect.x = randrange(LARGURA, 0, -50)
 
@@ -164,8 +155,6 @@ class Arvore(pygame.sprite.Sprite):
         self.imagem_arvore = []
         self.imagem_arvore.append(pygame.image.load('imagens/arvore_pre_historia0.png'))
         self.imagem_arvore.append(pygame.image.load('imagens/arvore_pre_historia1.png'))
-
-        # self.image = pygame.transform.scale()
         self.index_lista = 0
         self.image = self.imagem_arvore[self.index_lista]
         self.image = pygame.transform.scale(self.image, (32*2, 32*2))
@@ -190,23 +179,18 @@ class Arvore(pygame.sprite.Sprite):
 class DinoVoador(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-
         self.imagens_dino_voador = []
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador0.png'))
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador1.png'))
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador2.png'))
         self.imagens_dino_voador.append(pygame.image.load('imagens/dino_voador3.png'))
-
         self.index_lista = 0
         self.image = self.imagens_dino_voador[self.index_lista]
         self.image = pygame.transform.scale(self.image, (28*2, 43*2))
         self.mask = pygame.mask.from_surface(self.image)
-
         self.rect = self.image.get_rect() # Aqui eu estou deixando a imagem retâgunlar para poder manipulá-la
         self.rect.center = (LARGURA, 200)
-
         self.escolha = escolha_obstaculo
-
         self.rect.x = LARGURA
 
     def update(self):
@@ -222,27 +206,6 @@ class DinoVoador(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (28 * 2, 43 * 2))
 
 
-class OvoDino(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('imagens/ovo_dino.png')
-        self.image = pygame.transform.scale(self.image, (1024//18, 1024//18))
-        self.rect = self.image.get_rect()
-        self.rect.center = (300, 320)
-        self.rect.x = LARGURA
-        self.rect.y = random.randint(300, 395)
-        self.sorteio = 0
-        # LARGURA = 640
-        # ALTURA = 480
-
-    def update(self):
-        self.sorteio = random.randint(100, 300)
-        if self.sorteio == 100:
-            if self.rect.topright[0] < 0:
-                self.rect.x = LARGURA
-            else:
-                self.rect.x = self.rect.x - velocidade_jogo
-
 AMARELO = (204, 138, 0)
 def mostrar_texto():
     fonte = pygame.font.SysFont('choco', 50)
@@ -256,30 +219,25 @@ def mostrar_titulo_jogo():
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
-def mostrar_painel(pontuacao): # Mostra a pontuação no final do jogo
+def mostrar_pontuacao_no_final(pontuacao): # Mostra a pontuação no final do jogo
     fonte = pygame.font.SysFont("choco", 50)
     texto = fonte.render(f'Sua pontuação é {pontuacao}', False, (238, 104, 0), None)
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
-def mostrar_pontuacao_maxima(maxima_pontuacao):  # Mostra
+def mostrar_pontuacao_maxima(maxima_pontuacao):  # Mostra o nome da pontuação máxima
     fonte = pygame.font.SysFont('choco', 50)
     texto = fonte.render(f'Pontuação máxima: {maxima_pontuacao}', False, (0, 0, 0), None)
     tela.blit(texto, [200, 100])
 
-
-
-
 todas_as_sprites = pygame.sprite.Group()
 dino = Dino()
-ovo_dino = OvoDino()
-todas_as_sprites.add(dino)
-todas_as_sprites.add(ovo_dino)
 arvore = Arvore()
+dino_voador = DinoVoador()
+todas_as_sprites.add(dino)
 todas_as_sprites.add(arvore)
 grupo_obstaculos = pygame.sprite.Group()
 grupo_obstaculos.add(arvore)
-dino_voador = DinoVoador()
 todas_as_sprites.add(dino_voador)
 grupo_obstaculos.add(dino_voador)
 desvanecimento = 0
@@ -287,13 +245,11 @@ for c in range(LARGURA*2//64):
     chao = Chao(c)
     todas_as_sprites.add(chao)
 
-
 for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
     nuvens = Nuvens()
     todas_as_sprites.add(nuvens)
 relogio = pygame.time.Clock()
 deve_continuar = True
-
 mostrar_texto()
 dino.rugir()
 dino.musica_fundo.play()
@@ -302,10 +258,9 @@ tela.fill((0, 0, 0))
 pygame.time.delay(2000)
 mostrar_titulo_jogo()
 pygame.time.delay(2000)
-
 while deve_continuar:
     relogio.tick(30)
-    tela.fill([0,0,0])
+
     tela.blit(imagem_fundo, (0, 0))
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -316,7 +271,6 @@ while deve_continuar:
                     pass
                 else:
                     dino.pular()
-
             if event.key == K_r and colidiu == True:
                 reiniciar_jogo()
             if event.key == K_ESCAPE and colidiu == True:
@@ -343,7 +297,6 @@ while deve_continuar:
             pontuacao_maxima = pontos
             with open('pontuacao.txt', 'w') as file:
                 file.write(str(pontuacao_maxima))
-
         if desvanecimento < LARGURA:
             desvanecimento += 20
             pygame.draw.rect(tela,(0,0,0),(0, 0, LARGURA, ALTURA))
@@ -353,11 +306,11 @@ while deve_continuar:
         texto_sair = exibe_mensagem('ou ESC para sair', 26, (204,138,0))
         tela.blit(texto_reiniciar, (LARGURA//2, (ALTURA//2)+60))
         tela.blit(texto_sair, (LARGURA//2, (ALTURA//2)+75))
-        mostrar_painel(pontos)
-
+        mostrar_pontuacao_no_final(pontos)
     else:
         pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e medida que o código vai se repetindo, ela vai incrementando,
         # aumentando a pontuação
+        mostrar_pontuacao_maxima(pontuacao_maxima)
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
         texto_pontos = exibe_mensagem(pontos, 50, (0, 0, 0))
     if pontos % 100 == 0 and colidiu == False:
@@ -367,8 +320,5 @@ while deve_continuar:
         else:
             velocidade_jogo += 1
     desvanecimento = 0
-
     tela.blit(texto_pontos, (520, 30))
-    if colidiu == False:
-        mostrar_pontuacao_maxima(pontuacao_maxima)
     pygame.display.update()
