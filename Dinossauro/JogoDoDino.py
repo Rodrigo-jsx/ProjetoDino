@@ -283,7 +283,7 @@ while deve_continuar:
     # colisoes é uma lista vazia quando não tem nenhuma colisão, sem nenhum elemento.
     # Quando houver uma colisão, essa lista colisoes vai receber o objeto que colidiu com o dinossauro
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
-    if arvore.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:
+    if arvore.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:  # Impede que os obstáculos apareçam ao mesmo tempo
         escolha_obstaculo = choice([0, 1])
         arvore.rect.x = LARGURA
         dino_voador.rect.x = LARGURA
@@ -313,7 +313,7 @@ while deve_continuar:
         mostrar_pontuacao_maxima(pontuacao_maxima)
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
         texto_pontos = exibe_mensagem(pontos, 50, (0, 0, 0))
-    if pontos % 100 == 0 and colidiu == False:
+    if pontos % 100 == 0 and colidiu == False: # A cada 100 pontos ele exibe o som da pontuação. Velocidade do jogo é limitada até 23
         dino.som_pontuacao.play()
         if velocidade_jogo >= 23:
             velocidade_jogo += 0
