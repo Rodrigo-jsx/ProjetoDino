@@ -82,7 +82,6 @@ class Dino(pygame.sprite.Sprite):
         self.pos_y_inicial = ALTURA-68 - 96//2
         self.mask = pygame.mask.from_surface(self.image)
         # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
-        self.protecao = False
 
     def pular(self):
         self.pulo = True
@@ -192,7 +191,6 @@ class DinoVoador(pygame.sprite.Sprite):
         self.rect.center = (LARGURA, 200)
         self.escolha = escolha_obstaculo
         self.rect.x = LARGURA
-
     def update(self):
         if self.escolha == 1:
             if self.rect.topright[0] < 0:
@@ -241,11 +239,12 @@ grupo_obstaculos.add(arvore)
 todas_as_sprites.add(dino_voador)
 grupo_obstaculos.add(dino_voador)
 desvanecimento = 0
-for c in range(LARGURA*2//64):
+
+for c in range(LARGURA*2//64): # Aqui vai ser criado a repetição das sprites do chão
     chao = Chao(c)
     todas_as_sprites.add(chao)
 
-for i in range(3):  # Ele vai criar 4 nuvens, mas elas vão estar posicionadas uma em cima da outra
+for i in range(3):  # Ele vai criar 4 nuvens, criado a repetição das sprites da nuvem
     nuvens = Nuvens()
     todas_as_sprites.add(nuvens)
 relogio = pygame.time.Clock()
@@ -280,6 +279,8 @@ while deve_continuar:
     # O dokill, que se for setado como False, fará com que o arvore não apareça quando colidido
     # e a última flag, é para verificar se houve a colisão ou não
     colisoes = pygame.sprite.spritecollide(dino, grupo_obstaculos, False, pygame.sprite.collide_mask)
+
+
     # colisoes é uma lista vazia quando não tem nenhuma colisão, sem nenhum elemento.
     # Quando houver uma colisão, essa lista colisoes vai receber o objeto que colidiu com o dinossauro
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
@@ -289,15 +290,15 @@ while deve_continuar:
         dino_voador.rect.x = LARGURA
         arvore.escolha = escolha_obstaculo
         dino_voador.escolha = escolha_obstaculo
-    if colisoes and colidiu == False:
+    if colisoes and colidiu == False:  # Verifica as colisões
         dino.colidir()
         colidiu = True
-    if colidiu == True:
+    if colidiu == True:  # Escreve a pontuação máxima em um arquivo
         if pontos > pontuacao_maxima:
             pontuacao_maxima = pontos
             with open('pontuacao.txt', 'w') as file:
                 file.write(str(pontuacao_maxima))
-        if desvanecimento < LARGURA:
+        if desvanecimento < LARGURA:  # Efeito da tela preta no final do jogo
             desvanecimento += 20
             pygame.draw.rect(tela,(0,0,0),(0, 0, LARGURA, ALTURA))
         game_over = exibe_mensagem("FIM DE JOGO", 40, (204,138,0))
@@ -308,8 +309,7 @@ while deve_continuar:
         tela.blit(texto_sair, (LARGURA//2, (ALTURA//2)+75))
         mostrar_pontuacao_no_final(pontos)
     else:
-        pontos += 1 # na 1.ª iteração do loop, o valor dessa variável é 1, e na medida que o código vai se repetindo, ela vai incrementando,
-        # aumentando a pontuação
+        pontos += 1 # Aqui ele vai incrementar a pontuação
         mostrar_pontuacao_maxima(pontuacao_maxima)
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
         texto_pontos = exibe_mensagem(pontos, 50, (0, 0, 0))
