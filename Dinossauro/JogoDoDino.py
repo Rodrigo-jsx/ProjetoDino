@@ -5,19 +5,19 @@ import pygame
 from pygame.locals import *
 from random import randrange, choice
 import os
-
-diretorio_principal = os.path.dirname(__file__)  # Indica o diretório/pasta atual
-diretorio_imagens = os.path.join(diretorio_principal, 'imagens')  # Junta a pasta principal com o diretório de imagens
-diretorio_sons = os.path.join(diretorio_principal, 'sons')  # Junta o diretório de sons com a pasta dos sons
-pygame.init()  # Inicia os módulos pygame
+# Junta o diretório principal, com o diretório de imagens e sons
+diretorio_principal = os.path.dirname(__file__)
+diretorio_imagens = os.path.join(diretorio_principal, 'imagens')
+diretorio_sons = os.path.join(diretorio_principal, 'sons')
+pygame.init()
 pygame.mixer.init()
 LARGURA = 640
 ALTURA = 480
-BRANCO = (255, 255, 255)
+
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption('Dino Runner')
-# Cria uma variável que carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
-sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
+# Carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
+# sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
 background_art = pygame.image.load(os.path.join(diretorio_imagens, 'pre_historia.png')).convert()
 imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
 colidiu = False
@@ -31,9 +31,9 @@ if os.path.exists('pontuacao.txt'):
 else:
     pontuacao_maxima = 0
 def exibe_mensagem(msg, tamanho, cor):  # Exibe mensagens de pontos, game over e sair
-    fonte = pygame.font.SysFont('choco', tamanho, True, False) # objeto armazenando a fonte , penúltimo argumento, negrito, último argumento, itálico
-    mensagem = f'{msg}' # Essa variável vai mudar a cada iteração do loop principal do jogo
-    texto_formatado = fonte.render(mensagem, False, cor) # mensagem, anti-alising(serrilhado, se você quer que o texto seja serrilhado, coloque True)
+    fonte = pygame.font.SysFont('choco', tamanho, True, False)
+    mensagem = f'{msg}'
+    texto_formatado = fonte.render(mensagem, False, cor)
     return texto_formatado
 
 def reiniciar_jogo():
@@ -74,7 +74,6 @@ class Dino(pygame.sprite.Sprite):
         self.index_lista = 0
         self.image = self.imagens_dinossauro[self.index_lista]
         self.image = pygame.transform.scale(self.image, (48*2, 41*2))
-        # O atributo self.rect foi criado para armazenar o valor da imagem da sprite/frame, a partir daí ele vai pegar o retângulo dela
         self.rect = self.image.get_rect()
         # Posicione o centro desse retângulo na posição 100x e 100y
         self.rect.center = (100, ALTURA-64)
@@ -117,9 +116,9 @@ class Nuvens(pygame.sprite.Sprite):
         self.lista_nuvens.append(pygame.image.load('imagens/cloud-sprite1.png'))
         self.index_lista = 0
         self.image = self.lista_nuvens[self.index_lista]
-        self.image = pygame.transform.scale(self.image,(32*2, 32*2))  # Aumenta o tamanho da sprite
+        self.image = pygame.transform.scale(self.image,(32*2, 32*2))
         self.rect = self.image.get_rect()
-        self.rect.y = randrange(50, 200, 50)  # Vai deixar posicionado na tela na posição indicada entre parânteses
+        self.rect.y = randrange(50, 200, 50)
         self.rect.x = randrange(LARGURA, 0, -50)
 
     def update(self):
@@ -135,11 +134,12 @@ class Nuvens(pygame.sprite.Sprite):
 class Chao(pygame.sprite.Sprite):
     def __init__(self, pos_x):
         pygame.sprite.Sprite.__init__(self)
-        self.image = sprite_sheet.subsurface((32*6, 0), (32, 32))  # Recorte da imagem
-        self.rect = self.image.get_rect()  # Transforma a imagem em retângulo para poder manipulá-la melhor
+        # self.image = sprite_sheet.subsurface((32*6, 0), (32, 32))
+        self.image = pygame.image.load('imagens/chao_pre_historico.png')
+        self.rect = self.image.get_rect()
         self.rect.center = (100, 400)
         self.image = pygame.transform.scale(self.image, (32*2, 32*2))
-        self.rect.y = ALTURA - 64
+        self.rect.y = ALTURA - 50
         self.rect.x = pos_x * 64
 
     def update(self):
@@ -159,7 +159,7 @@ class Arvore(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (32*2, 32*2))
         self.rect = self.image.get_rect()
         self.rect.center = (LARGURA, ALTURA - 87)
-        self.mask = pygame.mask.from_surface(self.image) # Foi criado uma máscara para a imagem do dino para poder trabalhar a colisão
+        self.mask = pygame.mask.from_surface(self.image)
         self.escolha = escolha_obstaculo
         self.rect.x = LARGURA
 
@@ -187,7 +187,7 @@ class DinoVoador(pygame.sprite.Sprite):
         self.image = self.imagens_dino_voador[self.index_lista]
         self.image = pygame.transform.scale(self.image, (28*2, 43*2))
         self.mask = pygame.mask.from_surface(self.image)
-        self.rect = self.image.get_rect() # Aqui eu estou deixando a imagem retâgunlar para poder manipulá-la
+        self.rect = self.image.get_rect()
         self.rect.center = (LARGURA, 200)
         self.escolha = escolha_obstaculo
         self.rect.x = LARGURA
@@ -223,7 +223,7 @@ def mostrar_pontuacao_no_final(pontuacao): # Mostra a pontuação no final do jo
     tela.blit(texto, [200, 150])
     pygame.display.flip()
 
-def mostrar_pontuacao_maxima(maxima_pontuacao):  # Mostra o nome da pontuação máxima
+def mostrar_pontuacao_maxima(maxima_pontuacao):  # Mostra a pontuação máxima
     fonte = pygame.font.SysFont('choco', 50)
     texto = fonte.render(f'Pontuação máxima: {maxima_pontuacao}', False, (0, 0, 0), None)
     tela.blit(texto, [200, 100])
@@ -240,11 +240,11 @@ todas_as_sprites.add(dino_voador)
 grupo_obstaculos.add(dino_voador)
 desvanecimento = 0
 
-for c in range(LARGURA*2//64): # Aqui vai ser criado a repetição das sprites do chão
+for c in range(LARGURA*3//64): # Aqui vai ser criado a repetição das sprites do chão
     chao = Chao(c)
     todas_as_sprites.add(chao)
 
-for i in range(3):  # Ele vai criar 4 nuvens, criado a repetição das sprites da nuvem
+for i in range(3):  # Criado a repetição das sprites da nuvem
     nuvens = Nuvens()
     todas_as_sprites.add(nuvens)
 relogio = pygame.time.Clock()
@@ -259,7 +259,6 @@ mostrar_titulo_jogo()
 pygame.time.delay(2000)
 while deve_continuar:
     relogio.tick(30)
-
     tela.blit(imagem_fundo, (0, 0))
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -274,15 +273,7 @@ while deve_continuar:
                 reiniciar_jogo()
             if event.key == K_ESCAPE and colidiu == True:
                 deve_continuar = False
-    # Método abaixo verifica se houve alguma colisão com as sprites, e recebe como argumento
-    # O objeto dino, o grupo de obstáculos, que está incluído o arvore, e mais tarde, o pássaro
-    # O dokill, que se for setado como False, fará com que o arvore não apareça quando colidido
-    # e a última flag, é para verificar se houve a colisão ou não
     colisoes = pygame.sprite.spritecollide(dino, grupo_obstaculos, False, pygame.sprite.collide_mask)
-
-
-    # colisoes é uma lista vazia quando não tem nenhuma colisão, sem nenhum elemento.
-    # Quando houver uma colisão, essa lista colisoes vai receber o objeto que colidiu com o dinossauro
     todas_as_sprites.draw(tela)  # a variável ao lado contém todas as sprites, o método draw() desenha na tela essas imagens
     if arvore.rect.topright[0] <= 0 or dino_voador.rect.topright[0] <= 0:  # Impede que os obstáculos apareçam ao mesmo tempo
         escolha_obstaculo = choice([0, 1])
@@ -309,11 +300,11 @@ while deve_continuar:
         tela.blit(texto_sair, (LARGURA//2, (ALTURA//2)+75))
         mostrar_pontuacao_no_final(pontos)
     else:
-        pontos += 1 # Aqui ele vai incrementar a pontuação
+        pontos += 1   # Aqui ele vai incrementar a pontuação
         mostrar_pontuacao_maxima(pontuacao_maxima)
         todas_as_sprites.update()  # o método update() atualiza na tela o movimento das sprites
         texto_pontos = exibe_mensagem(pontos, 50, (0, 0, 0))
-    if pontos % 100 == 0 and colidiu == False: # A cada 100 pontos ele exibe o som da pontuação. Velocidade do jogo é limitada até 23
+    if pontos % 100 == 0 and colidiu == False:  # A cada 100 pontos ele exibe o som da pontuação.
         dino.som_pontuacao.play()
         if velocidade_jogo >= 23:
             velocidade_jogo += 0
