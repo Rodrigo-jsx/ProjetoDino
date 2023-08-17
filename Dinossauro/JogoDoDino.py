@@ -17,7 +17,6 @@ ALTURA = 480
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption('Dino Runner')
 # Carrega uma imagem, depois junta o diretório de imagens com a imagem que tem dentro dele
-# sprite_sheet = pygame.image.load(os.path.join(diretorio_imagens, 'dinoSpritesheet.png')).convert_alpha()
 background_art = pygame.image.load(os.path.join(diretorio_imagens, 'pre_historia.png')).convert()
 imagem_fundo = pygame.transform.scale(background_art, (LARGURA, ALTURA))
 colidiu = False
@@ -134,7 +133,6 @@ class Nuvens(pygame.sprite.Sprite):
 class Chao(pygame.sprite.Sprite):
     def __init__(self, pos_x):
         pygame.sprite.Sprite.__init__(self)
-        # self.image = sprite_sheet.subsurface((32*6, 0), (32, 32))
         self.image = pygame.image.load('imagens/chao_pre_historico.png')
         self.rect = self.image.get_rect()
         self.rect.center = (100, 400)
@@ -191,6 +189,7 @@ class DinoVoador(pygame.sprite.Sprite):
         self.rect.center = (LARGURA, 200)
         self.escolha = escolha_obstaculo
         self.rect.x = LARGURA
+
     def update(self):
         if self.escolha == 1:
             if self.rect.topright[0] < 0:
@@ -258,7 +257,7 @@ pygame.time.delay(2000)
 mostrar_titulo_jogo()
 pygame.time.delay(2000)
 while deve_continuar:
-    relogio.tick(30)
+    relogio.tick(25)
     tela.blit(imagem_fundo, (0, 0))
     for event in pygame.event.get():
         if event.type == QUIT:
