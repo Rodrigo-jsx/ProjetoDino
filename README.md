@@ -1,2 +1,2 @@
 # ProjetoDino
- Novo Repositório com o código do dino
+ Código do Jogo do Dinossauro
